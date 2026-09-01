@@ -1,14 +1,18 @@
 # ResearchMind-AI
 
-An agentic RAG system for research papers and documents — upload PDFs, ask questions, and get cited answers pulled from your own documents, the open web, or arXiv, depending on what the question needs.
+ResearchMind is an agentic, multimodal RAG system for research papers, upload PDFs and get evidence-backed answers with source-level citations, streamed in real time.
 
-Unlike a plain "embed and retrieve" RAG pipeline, ResearchMind routes every query through a planning agent that decides *how* to answer it: pull from your uploaded documents, search the web, search arXiv for papers, or just answer directly — then streams the response back with numbered citations pointing at the exact source chunk.
+Unlike a standard embed-and-retrieve pipeline, every query first passes through a LangGraph planning agent that decides how to answer it: retrieve from the user's own document corpus, search the live web, search arXiv for related literature, or answer directly with no retrieval at all — routing dynamically per query rather than running one fixed pipeline every time.
+
+Retrieval itself is hybrid: dense vector search (pgvector) and BM25 lexical search run in parallel, fused via Reciprocal Rank Fusion, then narrowed by a cross-encoder reranker before being handed to the generator — so exact terms, acronyms, and numeric values aren't lost the way pure embedding search tends to lose them.
+
+Documents aren't treated as flat text. A multimodal ingestion pipeline extracts tables structurally (rendered to markdown) and classifies figures via vision — distinguishing charts (extracting axes, trends, and specific values) from plain images (captioned) — so a question like "what does Figure 2 show?" pulls from the actual chart's extracted data, not just surrounding paragraph text.
 
 ---
 
 ## Live Demo
 
-- **App:** [your-frontend-url.vercel.app](https://research-mind-ai-wine.vercel.app/)
+- **App:** [project live demo.vercel.app](https://research-mind-ai-wine.vercel.app/)
 
 > Hosted on Render's free tier — the backend may take ~30–60s to wake up on the first request after a period of inactivity.
 
@@ -25,7 +29,6 @@ Unlike a plain "embed and retrieve" RAG pipeline, ResearchMind routes every quer
 - [API Reference](#api-reference)
 - [Deployment](#deployment)
 - [Design Notes](#design-notes)
-- [Roadmap](#roadmap)
 
 ---
 
@@ -79,8 +82,7 @@ PDF upload
 | API | FastAPI + Uvicorn |
 | Agent orchestration | LangGraph |
 | LLM | Google Gemini (`google-genai`) — generation, vision, and embeddings |
-| Database | PostgreSQL + [pgvector](https://github.com/pgvector/pgvector) |
-| ORM | SQLAlchemy 2.0 (async) + Alembic |
+| Database | PostgreSQL  |
 | Lexical search | rank-bm25 |
 | PDF parsing | pypdf, pdfplumber, PyMuPDF |
 | Auth | JWT (email/password) + Firebase Admin (Google Sign-In) |
@@ -189,6 +191,22 @@ The API is now live at `http://localhost:8000` — check `http://localhost:8000/
 | `CHUNK_SIZE` / `CHUNK_OVERLAP` | Text chunking parameters |
 | `VECTOR_TOP_K` / `BM25_TOP_K` / `HYBRID_TOP_K` / `RRF_K` | Retrieval tuning parameters |
 
+## Frontend Deployment (Vercel)
+
+1. Push the `frontend/` folder to GitHub.
+2. Go to [vercel.com](https://vercel.com) → **New Project** → import your repo → set **Root Directory** to `frontend`.
+3. Add environment variables (Vercel → Project Settings → Environment Variables):
+   ```
+   NEXT_PUBLIC_API_URL=https://your-backend.onrender.com
+   NEXT_PUBLIC_FIREBASE_API_KEY=...
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+   NEXT_PUBLIC_FIREBASE_APP_ID=...
+   ```
+4. Click **Deploy**. Vercel builds and gives you a live URL (`https://your-app.vercel.app`).
+5. **Two follow-up steps** after deploy:
+   - On Render (backend) → set `ALLOWED_ORIGINS=https://your-app.vercel.app` so CORS allows requests from the live frontend.
+   - In Firebase Console → Authentication → Settings → Authorized domains → add your Vercel domain (required for Google Sign-In to work).
 
 
 ## API Reference
