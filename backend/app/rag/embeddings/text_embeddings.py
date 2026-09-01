@@ -98,7 +98,7 @@ class TextEmbedder:
             response = self._client.models.embed_content(
                 model=self.model_name,
                 contents=batch,
-                config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT"),
+                config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT",output_dimensionality=settings.VECTOR_DIM),
             )
             results.extend(embedding.values for embedding in response.embeddings)
         return results
@@ -108,7 +108,7 @@ class TextEmbedder:
         response = self._client.models.embed_content(
             model=self.model_name,
             contents=[query],
-            config=types.EmbedContentConfig(task_type="RETRIEVAL_QUERY"),
+            config=types.EmbedContentConfig(task_type="RETRIEVAL_QUERY",output_dimensionality=settings.VECTOR_DIM),
         )
         return response.embeddings[0].values
 
