@@ -16,8 +16,7 @@ alembic
 pypdf
 
 # --- Embeddings & Reranking ---
-sentence-transformers
-torch
+
 
 # --- Lexical search ---
 rank-bm25
