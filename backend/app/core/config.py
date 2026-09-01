@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str = "*"
 
     # --- Embeddings ---
-    EMBEDDING_MODEL: str = "BAAI/bge-base-en-v1.5"
+    EMBEDDING_MODEL: str = "text-embedding-004"
     VECTOR_DIM: int = 768
 
     # --- Reranker ---
