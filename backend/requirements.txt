@@ -1,4 +1,7 @@
 # --- Core ---
+
+--extra-index-url https://download.pytorch.org/whl/cpu
+
 python-dotenv
 pydantic
 pydantic-settings
@@ -46,3 +49,4 @@ bcrypt
 pyjwt
 firebase-admin
 email-validator
+
