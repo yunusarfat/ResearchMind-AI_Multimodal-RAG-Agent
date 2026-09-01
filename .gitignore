@@ -1,0 +1,15 @@
+# Backend
+backend/.env
+backend/venv/
+backend/**/__pycache__/
+backend/firebase-credentials.json
+backend/data/uploads/
+backend/data/processed/
+
+# Frontend
+frontend/.env.local
+frontend/node_modules/
+frontend/.next/
+
+# OS
+.DS_Store

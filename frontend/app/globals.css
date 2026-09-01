@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design tokens.
+
+  Palette (light):
+    bg        #FFFFFF  page background
+    surface   #F7F8FA  panels, sidebars, cards
+    surface-2 #EEF0F3  nested/hover surface
+    border    #E5E7EB  hairline dividers
+    ink       #111318  primary text
+    muted     #6B7280  secondary text
+    accent    #3B5BDB  the one accent — links, primary actions, active states
+    danger    #DC2626  errors only
+
+  Palette (dark): same roles, inverted luminance, accent unchanged so it
+  reads consistently as "the" brand color in both modes.
+*/
+:root {
+  --bg: 255 255 255;
+  --surface: 247 248 250;
+  --surface-2: 238 240 243;
+  --border: 229 231 235;
+  --ink: 17 19 24;
+  --muted: 107 114 128;
+  --accent: 59 91 219;
+  --accent-ink: 255 255 255;
+  --danger: 220 38 38;
+}
+
+.dark {
+  --bg: 11 13 17;
+  --surface: 20 23 28;
+  --surface-2: 27 31 38;
+  --border: 38 43 51;
+  --ink: 231 233 236;
+  --muted: 138 144 156;
+  --accent: 87 116 235;
+  --accent-ink: 255 255 255;
+  --danger: 248 113 113;
+}
+
+* {
+  border-color: rgb(var(--border));
+}
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: rgb(var(--bg));
+  color: rgb(var(--ink));
+}
+
+/* Visible keyboard focus everywhere — accessibility floor, not optional. */
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Thin, unobtrusive scrollbars matching the palette */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--border));
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--muted));
+}

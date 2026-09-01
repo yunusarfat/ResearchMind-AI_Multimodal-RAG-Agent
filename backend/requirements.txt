@@ -1,0 +1,48 @@
+# --- Core ---
+python-dotenv
+pydantic
+pydantic-settings
+
+# --- Database (PostgreSQL + pgvector) ---
+sqlalchemy[asyncio]
+asyncpg
+pgvector
+alembic
+
+# --- PDF ingestion ---
+pypdf
+
+# --- Embeddings & Reranking ---
+sentence-transformers
+torch
+
+# --- Lexical search ---
+rank-bm25
+nltk
+
+# --- Utilities ---
+tqdm
+numpy
+
+
+
+fastapi
+uvicorn[standard]
+python-multipart
+google-generativeai
+
+
+pdfplumber
+pillow
+PyMuPDF
+
+langgraph
+ddgs
+arxiv
+
+
+
+bcrypt
+pyjwt
+firebase-admin
+email-validator
