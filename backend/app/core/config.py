@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str = "*"
 
     # --- Embeddings ---
-    EMBEDDING_MODEL: str = "text-embedding-001"
+    EMBEDDING_MODEL: str = "gemini-embedding-001"
     VECTOR_DIM: int = 768
 
     # --- Reranker ---
